@@ -33,10 +33,6 @@ else:
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(address)
 
-address = (hostname, PORT)
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(address)
 
 message_hello = {"type": "hello", "northeastern_username": "kong.weix"}
 message_hello_json = json.dumps(message_hello)
@@ -94,11 +90,6 @@ while True:
                     print(len(wordlist))
                 else:
                     index1 += 1
-            # for index2 in range(len(wordlist)):
-            #     print("2")
-            #     print(index2)
-            #     if wordlist[index2].find(word[index]) != -1:
-            #         wordlist.pop(index2)
 
         elif feedback["marks"][index] == 1 :
             index2 = 0
@@ -109,11 +100,6 @@ while True:
                     print(1)
                 else:
                     index2 += 1
-            # for index3 in range(len(wordlist)):
-            #     print("3")
-            #     print(index3)
-            #     if wordlist[index3].find(word[index]) == -1:
-            #         wordlist.pop(index3)
 
         else:
             index3 = 0
@@ -124,11 +110,6 @@ while True:
                     print(2)
                 else:
                     index3 += 1
-            # for index4 in range(len(wordlist)):
-            #     print("4")
-            #     print(index4)
-            #     if wordlist[index4][index] != word[index]:
-            #         wordlist.pop(index4)
 
 
 
