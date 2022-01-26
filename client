@@ -2,9 +2,9 @@
 import random
 import socket, argparse, ssl, json
 
-parser = argparse.ArgumentParser(description='Client Comm')
+parser = argparse.ArgumentParser(description='Client Conn')
 parser.add_argument('-p', '--port', type=int, metavar='', help='Server Port')
-parser.add_argument('-s', action="store_true", default=False, dest="flag", help='Server Port')
+parser.add_argument('-s', action="store_true", dest="flag", help='Server Port')
 parser.add_argument('hostname', type=str, metavar='', help='The name of the server')
 parser.add_argument('username', type=str, metavar='', help='Northeastern Username')
 args = parser.parse_args()
@@ -16,6 +16,7 @@ if args.port is not None:
     PORT = args.port
 else:
     PORT = 27993
+
 
 hostname = args.hostname
 username = args.username
@@ -34,7 +35,7 @@ else:
     client.connect(address)
 
 
-message_hello = {"type": "hello", "northeastern_username": "kong.weix"}
+message_hello = {"type": "hello", "northeastern_username": username}
 message_hello_json = json.dumps(message_hello)
 message_hello_sent = (message_hello_json + "\n").encode("utf-8")
 client.send(message_hello_sent)
@@ -67,7 +68,7 @@ while True:
 #  This part is to determine whether flag appears
     if message_guess_receive_json.get("flag", "True")  != "True":
         # print(word_count)
-        print("flag: " + message_guess_receive_json["flag"])
+        print(message_guess_receive_json["flag"])
         file.close()
         break;
 
