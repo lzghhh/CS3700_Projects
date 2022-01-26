@@ -41,8 +41,6 @@ message_hello_sent = (message_hello_json + "\n").encode("utf-8")
 client.send(message_hello_sent)
 
 message_start_received = client.recv(8192).decode("utf-8")
-# print("lol")
-# print(message_start_received)
 message_start_json = json.loads(message_start_received)
 id = message_start_json["id"]
 
@@ -52,8 +50,6 @@ while True:
     if len(wordlist) == 1:
         word = wordlist[0]
     else:
-        # print("length of word list")
-        # print(len(wordlist))
         word = wordlist[random.randint(0, len(wordlist) - 1)]
     message_guess = {"type": "guess", "id": id, "word": word.rstrip()}
     message_guess_json = json.dumps(message_guess)
@@ -67,38 +63,37 @@ while True:
 
 #  This part is to determine whether flag appears
     if message_guess_receive_json.get("flag", "True")  != "True":
-        # print(word_count)
+        print(word_count)
         print(message_guess_receive_json["flag"])
         file.close()
         break;
 
 # This part is to find new words
     message_guess_receive_list = message_guess_receive_json["guesses"]
-    # print("Received Message")
-    # print(message_guess_receive_list)
     feedback = message_guess_receive_list[len(message_guess_receive_list) - 1]
-    # print("word feedback")
-    # print(feedback)
-    for index in range(len(feedback)):
+    for index in range(len(feedback["marks"])):
         if feedback["marks"][index] == 0:
             index1 = 0
-            while index1 < len(wordlist):
-                if wordlist[index1].find(word[index]) != -1:
-                    # print(wordlist[index1])
-                    wordlist.pop(index1)
-                    # print("processing 0")
-                    # print("length of wordlist: ")
-                    # print(len(wordlist))
-                else:
-                    index1 += 1
+            delete_flag = True
+            for x in range(len(word) - 1):
+                if feedback["marks"][x] == 2 and word[index] == word[x] and index != x:
+                    delete_flag = False
+
+                if feedback["marks"][x] == 1 and word[index] == word[x] and index != x:
+                    delete_flag = False
+
+            if delete_flag:
+                while index1 < len(wordlist):
+                    if wordlist[index1].find(word[index]) != -1:
+                        wordlist.pop(index1)
+                    else:
+                        index1 += 1
 
         elif feedback["marks"][index] == 1 :
             index2 = 0
             while index2 < len(wordlist):
                 if wordlist[index2].find(word[index]) == -1:
                     wordlist.pop(index2)
-                    # print("processing 1")
-                    # print(1)
                 else:
                     index2 += 1
 
@@ -107,8 +102,6 @@ while True:
             while index3 < len(wordlist):
                 if wordlist[index3][index] != word[index]:
                     wordlist.pop(index3)
-                    # print("processing 2")
-                    # print(2)
                 else:
                     index3 += 1
 
