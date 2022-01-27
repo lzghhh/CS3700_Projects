@@ -64,6 +64,7 @@ while True:
 #  This part is to determine whether flag appears
     if message_guess_receive_json.get("flag", "True")  != "True":
         print(message_guess_receive_json["flag"])
+        print(word_count)
         file.close()
         break;
 
